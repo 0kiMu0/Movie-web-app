@@ -1,20 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import '../CSS/MoviesAndShows.css';
+import { fetchTopRatedTVShows, searchTVShows } from "../Services/Api";
 
-const TVShows = ({ tvShows, tvShowSearchTerm, handleTVShowSearch }) => {
+const TVShows = ({searchTerm}) => {
 
+    const [tvShows, setTVShows] = useState([]);
+    const [isValidSearch,setIsValidSearch] = useState(false);
+ 
+    useEffect(()=>{
+        const getTVShows = async()=>{
+            const data = await fetchTopRatedTVShows();
+            setTVShows(data);
+        }
+        getTVShows();
+    }, []);
+
+    useEffect(()=>{
+        if(searchTerm.length >=3)
+        {
+            setIsValidSearch(true);
+            const searchTVShowsAsync = async ()=>{
+                const results= await searchTVShows(searchTerm);
+                setTVShows(results);
+            }
+            searchTVShowsAsync();
+        }
+        else if (isValidSearch)
+        {
+            const getTVShows = async()=>{
+                const data = await fetchTopRatedTVShows();
+                setTVShows(data);
+                setIsValidSearch(false);
+            }
+            getTVShows();
+        }
+        }, [searchTerm, isValidSearch]);
+        
   return (
     <div className="grid-container">
       <h1>Top Rated TV Shows</h1>
-
-      <input
-        className="search-bar"
-        type="text"
-        placeholder="Search TV shows..."
-        value={tvShowSearchTerm}
-        onChange={handleTVShowSearch}  
-      />
-
       <div className="grid">
         {tvShows.map(show => (
           <div key={show.id} className="card">
