@@ -3,37 +3,44 @@ import './App.css';
 import NavBar from './Components/NavBar.js';
 import Movies from './Pages/Movies.js';
 import TVShows from "./Pages/TVShows.js";
-import { useState } from "react";
+import { SearchProvider } from "./context/SearchContext"; // Import konteksta
+import { useContext } from "react";
+import { SearchContext } from "./context/SearchContext";
 
-function App() {
-
-  const [searchTerm, setSearchTerm] = useState("");
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  }
-   
-  return (
-    <div className="App">
-        <Router>
-          <NavBar />
-          <input
+function SearchBar() {
+    const { searchTerm, handleSearch } = useContext(SearchContext);
+    
+    return (
+        <input
             className="search-bar"
             type="text"
             placeholder="Search..."
             value={searchTerm}
-            onChange={handleSearch}  
-          />
-          <Routes>
-            <Route path="/" element={<Navigate to="/Movies"/>} />
-            <Route path="/movies" element={<Movies searchTerm={searchTerm} />} />
-            <Route path="/tv-shows" element={<TVShows searchTerm={searchTerm}/>} />
-          </Routes>
-        </Router>
-    </div>
-  );
+            onChange={handleSearch}
+        />
+    );
+}
+
+function App() {
+    return (
+        <SearchProvider>
+            <div className="App">
+                <Router>
+                    <NavBar />
+                    <SearchBar /> 
+                    <Routes>
+                        <Route path="/" element={<Navigate to="/movies" />} />
+                        <Route path="/movies" element={<Movies />} />
+                        <Route path="/tv-shows" element={<TVShows />} />
+                    </Routes>
+                </Router>
+            </div>
+        </SearchProvider>
+    );
 }
 
 export default App;
+
 
     /*const [movies, setMovies] = useState([]);
     const [tvShows, setTvShows] = useState([]);
