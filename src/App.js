@@ -1,44 +1,41 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
 import './App.css';
 import NavBar from './Components/NavBar.js';
 import Movies from './Pages/Movies.js';
 import TVShows from "./Pages/TVShows.js";
-import { SearchProvider } from "./context/SearchContext"; 
-import { useSearch } from "./context/useSearch";
+import useSearchStore from "./store/searchStore"; // Importujemo Zustand store
 
-function SearchBar() {
-    const { searchTerm, handleSearch } = useSearch();
-    
-    return (
-        <input
+function App() {
+  const { searchTerm, setSearchTerm } = useSearchStore(); // Koristimo Zustand umjesto useState
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+   
+  return (
+    <div className="App">
+        <Router>
+          <NavBar />
+          <input
             className="search-bar"
             type="text"
             placeholder="Search..."
             value={searchTerm}
-            onChange={handleSearch}
-        />
-    );
-}
-
-function App() {
-    return (
-        <SearchProvider>
-            <div className="App">
-                <Router>
-                    <NavBar />
-                    <SearchBar /> 
-                    <Routes>
-                        <Route path="/" element={<Navigate to="/movies" />} />
-                        <Route path="/movies" element={<Movies />} />
-                        <Route path="/tv-shows" element={<TVShows />} />
-                    </Routes>
-                </Router>
-            </div>
-        </SearchProvider>
-    );
+            onChange={handleSearch}  
+          />
+          <Routes>
+            <Route path="/" element={<Navigate to="/movies" />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/tv-shows" element={<TVShows />} />
+          </Routes>
+        </Router>
+    </div>
+  );
 }
 
 export default App;
+
+
 
 
     /*const [movies, setMovies] = useState([]);

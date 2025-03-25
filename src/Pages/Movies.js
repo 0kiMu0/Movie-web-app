@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import '../CSS/MoviesAndShows.css';
 import { fetchTopRatedMovies, searchMovies } from "../Services/Api";
-import { useSearch } from "../context/useSearch"; 
+import useSearchStore from "../store/searchStore"; // Importujemo Zustand store
 
 const Movies = () => {
+    const { searchTerm } = useSearchStore(); // Koristimo searchTerm iz Zustanda
     const [movies, setMovies] = useState([]);
     const [isValidSearch, setIsValidSearch] = useState(false);
-    const { searchTerm } = useSearch(); 
 
     useEffect(() => {
         const getMovies = async () => {
