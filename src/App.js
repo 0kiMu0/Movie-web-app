@@ -3,12 +3,11 @@ import './App.css';
 import NavBar from './Components/NavBar.js';
 import Movies from './Pages/Movies.js';
 import TVShows from "./Pages/TVShows.js";
-import { SearchProvider } from "./context/SearchContext"; // Import konteksta
-import { useContext } from "react";
-import { SearchContext } from "./context/SearchContext";
+import { SearchProvider } from "./context/SearchContext"; 
+import { useSearch } from "./context/useSearch";
 
 function SearchBar() {
-    const { searchTerm, handleSearch } = useContext(SearchContext);
+    const { searchTerm, handleSearch } = useSearch();
     
     return (
         <input

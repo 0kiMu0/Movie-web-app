@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import '../CSS/MoviesAndShows.css';
 import { fetchTopRatedMovies, searchMovies } from "../Services/Api";
-import { SearchContext } from "../context/SearchContext"; // Import konteksta
+import { useSearch } from "../context/useSearch"; 
 
 const Movies = () => {
     const [movies, setMovies] = useState([]);
     const [isValidSearch, setIsValidSearch] = useState(false);
-    const { searchTerm } = useContext(SearchContext); // Dobijamo searchTerm iz konteksta
+    const { searchTerm } = useSearch(); 
 
     useEffect(() => {
         const getMovies = async () => {
