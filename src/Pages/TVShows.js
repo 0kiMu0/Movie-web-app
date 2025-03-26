@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import '../CSS/MoviesAndShows.css';
 import { fetchTopRatedTVShows, searchTVShows } from "../Services/Api";
-import useSearchStore from "../store/searchStore"; // Importujemo Zustand store
+import { useSelector } from "react-redux";
 
 const TVShows = () => {
-    const { searchTerm } = useSearchStore(); // Koristimo searchTerm iz Zustanda
+    const searchTerm = useSelector((state) => state.search.searchTerm);
     const [tvShows, setTVShows] = useState([]);
     const [isValidSearch, setIsValidSearch] = useState(false);
 

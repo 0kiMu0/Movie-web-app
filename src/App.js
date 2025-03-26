@@ -1,39 +1,42 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"; 
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchTerm } from "./store/searchSlice";
 import './App.css';
 import NavBar from './Components/NavBar.js';
 import Movies from './Pages/Movies.js';
 import TVShows from "./Pages/TVShows.js";
-import useSearchStore from "./store/searchStore"; // Importujemo Zustand store
 
 function App() {
-  const { searchTerm, setSearchTerm } = useSearchStore(); // Koristimo Zustand umjesto useState
+  const searchTerm = useSelector((state) => state.search.searchTerm);
+  const dispatch = useDispatch();
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
+    dispatch(setSearchTerm(event.target.value));
   };
-   
+
   return (
     <div className="App">
-        <Router>
-          <NavBar />
-          <input
-            className="search-bar"
-            type="text"
-            placeholder="Search..."
-            value={searchTerm}
-            onChange={handleSearch}  
-          />
-          <Routes>
-            <Route path="/" element={<Navigate to="/movies" />} />
-            <Route path="/movies" element={<Movies />} />
-            <Route path="/tv-shows" element={<TVShows />} />
-          </Routes>
-        </Router>
+      <Router>
+        <NavBar />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleSearch}
+        />
+        <Routes>
+          <Route path="/" element={<Navigate to="/movies" />} />
+          <Route path="/movies" element={<Movies />} />
+          <Route path="/tv-shows" element={<TVShows />} />
+        </Routes>
+      </Router>
     </div>
   );
 }
 
 export default App;
+
 
 
 
